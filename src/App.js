@@ -1,9 +1,9 @@
-import DinnerTable from "./components/DinnerTableComp";
+import KnightOfTheDinnerTable from "./components/KnightOfTheDinnerTable.js";
 
 function App() {
   return (
     <div>
-      <DinnerTable />
+      <KnightOfTheDinnerTable/>
     </div>
   );
 }
