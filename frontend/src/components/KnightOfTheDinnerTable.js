@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import input from '../input.text'
+import { createObjectData, getCombinationWithMaxTotalHappiness } from './helpers/HelperFunctions'
 
 const KnightOfTheDinnerTable = () => {
 	const [data, setData] = useState('')
-	// console.log(input.toString())
+	const [guests, setGuests] = useState([])
+	const [points, setPoints] = useState()
 
 	useEffect(() => {
 		fetchData()
 	}, [data])
-  const stringArray = data.match(/(\b[A-Z].*?\b)|(gain|lose)|([0-9]+)/gm)
-
+	useEffect(() => {
+		data && showRes()
+	}, [data])
 
 	const fetchData = async () => {
 		try {
@@ -20,33 +23,41 @@ const KnightOfTheDinnerTable = () => {
 			console.log('error, ', error)
 		}
 	}
-
-	console.log(stringArray)
-	const objectData = {}
-	if (stringArray?.length) {
-		for (let i = 0; i < stringArray.length; i += 4) {
-			//Creating every guest
-			const hapinessValue = (stringArray[i + 1] === 'lose' ? -1 : 1) * stringArray[i + 2]
-			//Creating every guests neighbors and value of happiness
-			objectData[stringArray[i]] = { ...objectData[stringArray[i]], [stringArray[i + 3]]: hapinessValue }
-		}
-		console.log(objectData)
+	const showRes = () => {
+		const stringArray = data?.match(/(\b[A-Z].*?\b)|(gain|lose)|([0-9]+)/gm)
+		const objectData = createObjectData(stringArray)
+		const names = Object.keys(objectData)
+		const optimizedCombination = getCombinationWithMaxTotalHappiness(names, objectData)
+		setGuests(Object.values(optimizedCombination[1]))
+		setPoints(optimizedCombination[0])
 	}
-  
 
 	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				alignItems: 'center',
-			}}
-		>
+		<div style={styleBody}>
 			<h2> --- Day 13: Knights of the Dinner Table ---</h2>
-			<div>{Object.keys(objectData).map((e)=><p>{e}</p>)}</div>
+			<div>
+				<h3>
+					Highest Happyness:
+					{points &&' ' + points}
+					<br />
+				</h3>
+
+				<h3>Best combination:</h3>
+				<h4>
+					{guests.map((element) => (
+						<p>{element}</p>
+					))}
+				</h4>
+			</div>
 		</div>
 	)
 }
 
 export default KnightOfTheDinnerTable
+
+const styleBody = {
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	alignItems: 'center',
+}
