@@ -15,6 +15,8 @@ export const createObjectData = (stringArray) => {
 	return objectData
 }
 
+
+
 /**
  * Calculates the total happiness of the received combination( counting left and right neighbor)
  */

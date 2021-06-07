@@ -1,34 +1,65 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import input from '../input.text'
+import input from '../input/2015/input15.text'
 import { createObjectData, getCombinationWithMaxTotalHappiness } from './helpers/HelperFunctions'
 
 const KnightOfTheDinnerTable = () => {
 	// const [data, setData] = useState('')
 	const [guests, setGuests] = useState([])
-	const [points, setPoints] = useState()
+	const [points, setPoints] = useState(0)
 	const [objectData, setObjectData] = useState(null)
 
 	useEffect(() => {
 		fetchData()
 	}, [])
+
+	useEffect(() => {
+		objectData?.me && findBestComb()
+	}, [objectData])
+
 	const fetchData = async () => {
 		try {
-			const res = await fetch(input)
-			const data = await res.text()
-			setObjectData(showRes(data))
+			const res = await (await fetch(input)).text()
+			setObjectData(extractData(res))
+			addMe()
 		} catch (error) {
 			console.log('error, ', error)
 		}
 	}
-	const showRes = (data) => {
+
+	const extractData = (data) => {
 		const stringArray = data?.match(/(\b[A-Z].*?\b)|(gain|lose)|([0-9]+)/gm)
 		const objectData = createObjectData(stringArray)
+		return objectData
+	}
+
+	const findBestComb = () => {
 		const names = Object.keys(objectData)
 		const optimizedCombination = getCombinationWithMaxTotalHappiness(names, objectData)
 		setGuests(Object.values(optimizedCombination[1]))
 		setPoints(optimizedCombination[0])
-		return objectData
 	}
+
+	const addMe = () => {
+		const me = {}
+		setObjectData((current) => {
+			Object.keys(current).map((key) => (me[key] = 0))
+			const newEntries = []
+			for (const [key, value] of Object.entries(current)) {
+				value.me = 0
+				newEntries.push([key, value])
+			}
+			const newData = Object.fromEntries(
+				/*Object.entries(current).map(([key, value]) => {
+					value.me = 0
+					return [key, value]
+				})*/
+				newEntries
+			)
+			newData.me = me
+			return newData
+		})
+	}
+
 	return (
 		<div style={styles.KnightsOfTheDinnerTable}>
 			<h2> --- Day 13: Knights of the Dinner Table ---</h2>
