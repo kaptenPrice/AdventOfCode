@@ -15,8 +15,6 @@ export const createObjectData = (stringArray) => {
 	return objectData
 }
 
-
-
 /**
  * Calculates the total happiness of the received combination( counting left and right neighbor)
  */
@@ -80,4 +78,13 @@ export const getCombinationWithMaxTotalHappiness = (names, happinessObject) => {
 		 * */
 		return ableToCalcTotalHappiness ? [bestTotalHappinness, betterCombo] : result
 	}
+}
+export const fetchData = async (data) => {
+	let text;
+	try {
+		text = await (await fetch(data)).text()
+	} catch (error) {
+		console.log('error, ', error)
+	}
+	return text
 }

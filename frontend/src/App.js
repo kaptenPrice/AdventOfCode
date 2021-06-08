@@ -1,3 +1,4 @@
+import DayFour from './components/DayFour.js'
 import DayOne from './components/DayOne.js'
 import { DayThree } from './components/DayThree.js'
 import DayTwo from './components/DayTwo.js'
@@ -9,7 +10,8 @@ function App() {
 			{/* <KnightOfTheDinnerTable/> */}
 			{/* <DayOne/> */}
 			{/* <DayTwo /> */}
-			<DayThree />
+			{/* <DayThree /> */}
+			<DayFour/>
 		</div>
 	)
 }
