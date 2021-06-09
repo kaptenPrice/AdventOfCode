@@ -5,14 +5,14 @@ import { readFileSync } from 'fs';
 
 export const DayThree = () => {
 	const [objectData, setObjectData] = useState(undefined);
-	const north = '^';
-	const south = 'v';
-	const west = '<';
-	const east = '>';
+	
 
-	useEffect(async () => {
-		const text = await fetchData(input);
-		text && setObjectData(text);
+	useEffect(() => {
+		const unSubScribe = async () => {
+			const text = await fetchData(input);
+			text && setObjectData(text);
+		};
+		return () => unSubScribe();
 	}, []);
 
 	const splittedData = objectData?.split('');
@@ -104,7 +104,7 @@ export const DayThree = () => {
 	}
 
 	const sumSanta = Object.keys(visitedHouses).length;
-    console.log(sumSanta)
+	console.log(sumSanta);
 
 	return <div>DAY THREE</div>;
 };
