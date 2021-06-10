@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import input from '../input/2015/input3.text';
-import { calculateHappiness, fetchData } from './helpers/HelperFunctions';
-import { readFileSync } from 'fs';
+import {  fetchData } from './helpers/HelperFunctions';
 
 export const DayThree = () => {
 	const [objectData, setObjectData] = useState(undefined);

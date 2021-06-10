@@ -20,9 +20,10 @@ const DayFour = () => {
 		if (solution.startsWith(zeroes)) {
 			console.log(counter);
 			return solution+counter
+			
 		}
 		counter++;
-	 }
+	  }
 
 	//console.log(counter)
 
