@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import incoming from '../input/2015/input5.text';
+import incoming from '../input/2015/input5.txt';
 import { fetchData, generateCharArray } from './helpers/HelperFunctions';
 
 const DayFive = () => {
@@ -12,53 +12,72 @@ const DayFive = () => {
 			const text = await fetchData(incoming);
 			setInput(text);
 		};
-		return () => unSubScribe();
+		unSubScribe();
 	}, []);
 
+	// console.log(input);
 	if (input) {
-		cleanData = input?.split('\n');
+		cleanData = input?.split('\r\n');
+		// console.log(cleanData);
 	}
 
-	const cleanInput = (arr1, arr2) => {
+	const splitInput = (arr1, arr2) => {
 		for (let i = 0; i < arr1?.length; i++) {
 			arr2.push(arr1[i].split(''));
 		}
 		return arr2;
 	};
-	const alphabetArray = generateCharArray('a', 'z');
-	const splitedWords = cleanInput( cleanData, wordArray);
-	// console.log("Cleaned array : ",splitedWords);
 
-	// console.log('Blended before check: ', unCheckedArray);
-	/*if (wordArray.length) {
-		const myLetter = wordArray[0][0];
-		const indexInAlphabet = alphabetArray.indexOf(myLetter);
-		console.log(indexInAlphabet);
-		console.log(alphabetArray[indexInAlphabet + 1]);
-	}*/
+	const alphabetArray = generateCharArray('a', 'z');
+	const splittedWords = splitInput(cleanData, wordArray);
+
 	const niceWords = [];
 	const badWords = [];
-	
-	if (splitedWords.length) {
-		for (let i = 0; i < splitedWords.length; i++) {
-			for (let j = 0; j < splitedWords[i].length; j++) {
+
+	if (splittedWords.length) {
+		for (let i = 0; i < splittedWords.length; i++) {
+			let isItNice = true;
+			for (let j = 0; j < splittedWords[i].length; j++) {
 				//The letter in original word to check
-				let letter = splitedWords[i][j];
+				let letter = splittedWords[i][j];
 				//Index of letter in alphabet
 				let indexOfLetterInAlphabet = alphabetArray.indexOf(letter);
 
-				if (splitedWords[i][j + 1] !== alphabetArray[indexOfLetterInAlphabet + 1]) {
-				
-					niceWords.push(splitedWords[[i][j]]);
-					console.log(niceWords)
-				// } else {
-				// 	badWords.push(splitedWords[i][j]);
+				if (splittedWords[i][j + 1] === alphabetArray[indexOfLetterInAlphabet + 1]) {
+					isItNice = false;
+					break;
 				}
 			}
+			isItNice && niceWords.push(splittedWords[i]);
 		}
 	}
-	// console.log("nice wordS: ",niceWords)
-	// console.log(badWords)
+	//if (!splittedWords[i].includes(/ab| cd| pq | xy/gm)) {}
+
+
+	const joinInput = (arr1) => {
+		const tempArr = [];
+		for (let i = 0; i < arr1?.length; i++) {
+			tempArr.push(arr1[i].join(''));
+		}
+		return tempArr;
+	};
+
+	const niceWordsJoined = joinInput(niceWords);
+	//  console.log(niceWords);
+	let vowels=["a","e","i","o","u"]
+	for (const char of vowels) {
+		const charCode=char.charCodeAt(char)
+		console.log("CharCode of :",char," is :", charCode)
+		
+	}
+	for (let i = 0; i < niceWordsJoined.length; i++) {
+		if(niceWordsJoined[i].includes("a"||"e"||"i"||"o"||"u")) {
+			// console.log("niceWords with vowels: ",niceWordsJoined[i])
+		}
+
+	}
+
+
 	return <div>Day Fiexer</div>;
 };
 

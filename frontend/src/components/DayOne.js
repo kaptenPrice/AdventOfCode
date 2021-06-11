@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import input from '../input/2015/input1.text'
+import input from '../input/2015/input1.txt'
 
 const DayOne = () => {
 	const [objectData, setObjectData] = useState(undefined)
